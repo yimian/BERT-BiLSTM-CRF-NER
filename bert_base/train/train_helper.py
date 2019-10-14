@@ -55,7 +55,7 @@ def get_args_parser():
                         help='Gradient clip')
     group2.add_argument('-warmup_proportion', type=float, default=0.1,
                         help='Proportion of training to perform linear learning rate warmup for '
-                             'E.g., 0.1 = 10% of training.')
+                             'E.g., 0.1 = 10%% of training.')
     group2.add_argument('-lstm_size', type=int, default=128,
                         help='size of lstm units.')
     group2.add_argument('-num_layers', type=int, default=1,
