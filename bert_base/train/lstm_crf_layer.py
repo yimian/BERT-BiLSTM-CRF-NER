@@ -95,7 +95,7 @@ class BLSTM_CRF(object):
             cell_fw, cell_bw = self._bi_dir_rnn()
             if self.num_layers > 1:
                 cell_fw = rnn.MultiRNNCell([self._bi_dir_rnn() for _ in range(self.num_layers)], state_is_tuple=True)
-                cell_bw = rnn.MultiRNNCell([self._bi_dir_rnn() for _ in  range(self.num_layers)], state_is_tuple=True)
+                cell_bw = rnn.MultiRNNCell([self._bi_dir_rnn() for _ in range(self.num_layers)], state_is_tuple=True)
 
             outputs, _ = tf.nn.bidirectional_dynamic_rnn(cell_fw, cell_bw, embedding_chars,
                                                          dtype=tf.float32)
