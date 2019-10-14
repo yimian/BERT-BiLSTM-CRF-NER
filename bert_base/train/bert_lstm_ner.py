@@ -383,7 +383,7 @@ def model_fn_builder(bert_config, num_labels, init_checkpoint, learning_rate,
         # 使用参数构建模型,input_idx 就是输入的样本idx表示，label_ids 就是标签的idx表示
         total_loss, logits, trans, pred_ids = create_model(
             bert_config, is_training, input_ids, input_mask, segment_ids, label_ids,
-            num_labels, False, args.dropout_rate, args.lstm_size, args.cell, args.num_layers)
+            num_labels, False, args.dropout_rate, args.lstm_size, args.cell, args.num_layers, args.crf_only)
 
         tvars = tf.trainable_variables()
         # 加载BERT模型

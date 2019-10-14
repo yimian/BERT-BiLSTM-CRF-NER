@@ -12,6 +12,7 @@ import os
 
 __all__ = ['get_args_parser']
 
+
 def get_args_parser():
     from .bert_lstm_ner import __version__
     parser = argparse.ArgumentParser()
@@ -56,6 +57,8 @@ def get_args_parser():
     group2.add_argument('-warmup_proportion', type=float, default=0.1,
                         help='Proportion of training to perform linear learning rate warmup for '
                              'E.g., 0.1 = 10%% of training.')
+    group2.add_argument('-crf_only', type=bool, default=True,
+                        help='whether only use crf layer.')
     group2.add_argument('-lstm_size', type=int, default=128,
                         help='size of lstm units.')
     group2.add_argument('-num_layers', type=int, default=1,
@@ -80,6 +83,6 @@ def get_args_parser():
 
     parser.add_argument('-verbose', action='store_true', default=False,
                         help='turn on tensorflow logging for debug')
-    parser.add_argument('-ner', type=str, default='ner', help='which modle to train')
+    parser.add_argument('-ner', type=str, default='ner', help='which model to train')
     parser.add_argument('-version', action='version', version='%(prog)s ' + __version__)
     return parser.parse_args()

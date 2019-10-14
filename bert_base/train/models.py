@@ -10,9 +10,9 @@
 from bert_base.train.lstm_crf_layer import BLSTM_CRF
 from tensorflow.contrib.layers.python.layers import initializers
 
-
 __all__ = ['InputExample', 'InputFeatures', 'decode_labels', 'create_model', 'convert_id_str',
            'convert_id_to_label', 'result_to_json', 'create_classification_model']
+
 
 class Model(object):
     def __init__(self, *args, **kwargs):
@@ -34,6 +34,7 @@ class InputExample(object):
         self.guid = guid
         self.text = text
         self.label = label
+
 
 class InputFeatures(object):
     """A single set of features of data."""
@@ -64,9 +65,13 @@ class DataProcessor(object):
 
 def create_model(bert_config, is_training, input_ids, input_mask,
                  segment_ids, labels, num_labels, use_one_hot_embeddings,
-                 dropout_rate=1.0, lstm_size=1, cell='lstm', num_layers=1):
+                 dropout_rate=1.0, lstm_size=1, cell='lstm', num_layers=1, crf_only=True):
     """
     创建X模型
+    :param crf_only:
+    :param cell:
+    :param lstm_size:
+    :param dropout_rate:
     :param bert_config: bert 配置
     :param is_training:
     :param input_ids: 数据的idx 表示
@@ -98,7 +103,7 @@ def create_model(bert_config, is_training, input_ids, input_mask,
     blstm_crf = BLSTM_CRF(embedded_chars=embedding, hidden_unit=lstm_size, cell_type=cell, num_layers=num_layers,
                           dropout_rate=dropout_rate, initializers=initializers, num_labels=num_labels,
                           seq_length=max_seq_length, labels=labels, lengths=lengths, is_training=is_training)
-    rst = blstm_crf.add_blstm_crf_layer(crf_only=True)
+    rst = blstm_crf.add_blstm_crf_layer(crf_only=crf_only)
     return rst
 
 
@@ -245,8 +250,8 @@ def result_to_json(self, string, tags):
 
     for char, tag in zip(string, tags):
         if tag[0] == "S":
-            self.append(char, idx, idx+1, tag[2:])
-            item["entities"].append({"word": char, "start": idx, "end": idx+1, "type":tag[2:]})
+            self.append(char, idx, idx + 1, tag[2:])
+            item["entities"].append({"word": char, "start": idx, "end": idx + 1, "type": tag[2:]})
         elif tag[0] == "B":
             if entity_name != '':
                 self.append(entity_name, entity_start, idx, last_tag[2:])
